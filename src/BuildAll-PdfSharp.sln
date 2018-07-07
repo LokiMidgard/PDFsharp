@@ -6,10 +6,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDFsharp", "PdfSharp\PDFsha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PdfSharp.Charting", "PdfSharp.Charting\PdfSharp.Charting.csproj", "{6F98A822-41B0-4C7A-85A6-E95C1D3E88EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Charting-gdi", "PdfSharp.Charting-gdi\PdfSharp.Charting-gdi.csproj", "{CFDB7D46-EA8D-47DE-B10A-9E755A1B48BA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Charting-wpf", "PdfSharp.Charting-wpf\PdfSharp.Charting-wpf.csproj", "{E6A2734E-0CD6-4210-8AEC-47EE348F8D78}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Core = Debug|Core
@@ -21,14 +17,9 @@ Global
 		{5A6055BC-BF86-4FDD-9F62-0109DB7A303B}.Release|Core.ActiveCfg = Release|Any CPU
 		{5A6055BC-BF86-4FDD-9F62-0109DB7A303B}.Release|Core.Build.0 = Release|Any CPU
 		{6F98A822-41B0-4C7A-85A6-E95C1D3E88EF}.Debug|Core.ActiveCfg = Debug|Any CPU
+		{6F98A822-41B0-4C7A-85A6-E95C1D3E88EF}.Debug|Core.Build.0 = Debug|Any CPU
 		{6F98A822-41B0-4C7A-85A6-E95C1D3E88EF}.Release|Core.ActiveCfg = Release|Any CPU
 		{6F98A822-41B0-4C7A-85A6-E95C1D3E88EF}.Release|Core.Build.0 = Release|Any CPU
-		{CFDB7D46-EA8D-47DE-B10A-9E755A1B48BA}.Debug|Core.ActiveCfg = Debug|Any CPU
-		{CFDB7D46-EA8D-47DE-B10A-9E755A1B48BA}.Release|Core.ActiveCfg = Release|Any CPU
-		{CFDB7D46-EA8D-47DE-B10A-9E755A1B48BA}.Release|Core.Build.0 = Release|Any CPU
-		{E6A2734E-0CD6-4210-8AEC-47EE348F8D78}.Debug|Core.ActiveCfg = Debug|Any CPU
-		{E6A2734E-0CD6-4210-8AEC-47EE348F8D78}.Release|Core.ActiveCfg = Release|Any CPU
-		{E6A2734E-0CD6-4210-8AEC-47EE348F8D78}.Release|Core.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
