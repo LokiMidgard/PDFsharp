@@ -1,14 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net20</TargetFrameworks>
+    <TargetFrameworks>net20;net30;netstandard20</TargetFrameworks>
+    <DefineConstants>$(DefineConstants)</DefineConstants>
     <RootNamespace>PdfSharp</RootNamespace>
     <AssemblyName>PdfSharp.Charting</AssemblyName>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard20'">
+    <DefineConstants>$(DefineConstants);CORE</DefineConstants>
+    <Core>true</Core>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net20'">
+    <DefineConstants>$(DefineConstants);GDI</DefineConstants>
+    <GDI>true</GDI>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net30'">
+    <DefineConstants>$(DefineConstants);WPF</DefineConstants>
+    <WPF>true</WPF>
+  </PropertyGroup>
+  
 
   <PropertyGroup>
-    <DefineConstants>$(DefineConstants);CORE</DefineConstants>
     <PackageId>PDFsharp.Charting</PackageId>
     
     <Version>1.50.0</Version>
@@ -24,27 +37,28 @@
 
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <DocumentationFile>bin\Release\net20\PdfSharp.Charting.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\$(TargetFramework)\PdfSharp.Charting.xml</DocumentationFile>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>StrongnameKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
 
-  <ItemGroup>
-    <None Remove="ReadMe.txt" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <Content Include="ReadMe.txt" />
-  </ItemGroup>
 
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\Messages.de.restext" />
     <EmbeddedResource Include="Resources\Messages.restext" />
   </ItemGroup>
-
+  
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard20'">
+    <PackageReference Include="System.Drawing.Common" Version="4.5.0" />
+  </ItemGroup>
+  
+  
+  <ItemGroup Condition="'$(WPF)'!=''">
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PdfSharp\PDFsharp.csproj" />
