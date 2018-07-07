@@ -124,12 +124,10 @@
       <DependentUpon>PagePreviewCanvas.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  
-  <ItemGroup>
+
+  <ItemGroup Condition="'$(WPF)'!=''">
     <Page Include="Windows\PagePreview.xaml" SubType="Designer" Generator="MSBuild:Compile" />
    <Compile Update="**\*.xaml.cs" SubType="Designer" DependentUpon="%(Filename)" />
-
-
   </ItemGroup>
 
 
