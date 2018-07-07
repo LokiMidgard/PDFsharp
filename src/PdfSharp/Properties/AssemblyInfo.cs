@@ -35,17 +35,17 @@ using System.Runtime.InteropServices;
 using System.Windows.Markup;
 #endif
 
-[assembly: AssemblyTitle(PdfSharp.VersionInfo.Title)]
-[assembly: AssemblyVersion(PdfSharp.VersionInfo.Version)]
-[assembly: AssemblyDescription(PdfSharp.VersionInfo.Description)]
-[assembly: AssemblyConfiguration(PdfSharp.VersionInfo.Configuration)]
-[assembly: AssemblyCompany(PdfSharp.VersionInfo.Company)]
-#if DEBUG
-[assembly: AssemblyProduct(PdfSharp.ProductVersionInfo.Product + " (Debug Build)")]
-#else
-  [assembly: AssemblyProduct(PdfSharp.ProductVersionInfo.Product)]
-#endif
-[assembly: AssemblyCopyright(PdfSharp.VersionInfo.Copyright)]
+//[assembly: AssemblyTitle(PdfSharp.VersionInfo.Title)]
+//[assembly: AssemblyVersion(PdfSharp.VersionInfo.Version)]
+//[assembly: AssemblyDescription(PdfSharp.VersionInfo.Description)]
+//[assembly: AssemblyConfiguration(PdfSharp.VersionInfo.Configuration)]
+//[assembly: AssemblyCompany(PdfSharp.VersionInfo.Company)]
+//#if DEBUG
+//[assembly: AssemblyProduct(PdfSharp.ProductVersionInfo.Product + " (Debug Build)")]
+//#else
+//  [assembly: AssemblyProduct(PdfSharp.ProductVersionInfo.Product)]
+//#endif
+//[assembly: AssemblyCopyright(PdfSharp.VersionInfo.Copyright)]
 [assembly: AssemblyTrademark(PdfSharp.VersionInfo.Trademark)]
 [assembly: AssemblyCulture(PdfSharp.VersionInfo.Culture)]
 
