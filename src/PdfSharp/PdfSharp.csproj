@@ -6,11 +6,15 @@
 
 <!-- netstandard20-->
   <PropertyGroup>
-    <TargetFrameworks>net20;net30</TargetFrameworks>
+    <TargetFrameworks>net20;net30;netstandard20</TargetFrameworks>
     <DefineConstants>$(DefineConstants)</DefineConstants>
     <AssemblyName>PDFsharp</AssemblyName>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard20'">
+    <DefineConstants>$(DefineConstants);CORE;CORE_WITH_GDI</DefineConstants>
+    <Core>true</Core>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)|$(ConfigureGDI)'=='net20|false'">
     <DefineConstants>$(DefineConstants);CORE;CORE_WITH_GDI</DefineConstants>
     <Core>true</Core>
@@ -79,6 +83,10 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\Messages.de.restext" />
     <EmbeddedResource Include="Resources\Messages.restext" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard20'">
+    <PackageReference Include="System.Drawing.Common" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(GDI)'!=''">
