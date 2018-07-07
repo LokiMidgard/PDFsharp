@@ -383,12 +383,6 @@
     <None Include="PdfSharp.Charting-wpf.csproj.resharper" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PdfSharp-wpf\PdfSharp-wpf.csproj">
-      <Project>{02FCC0BB-2AA2-43BA-8D2F-66D168B87A1D}</Project>
-      <Name>PdfSharp-wpf</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>

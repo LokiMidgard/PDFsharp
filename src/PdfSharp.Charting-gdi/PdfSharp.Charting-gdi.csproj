@@ -396,12 +396,6 @@
   <ItemGroup>
     <None Include="StrongnameKey.snk" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PdfSharp-gdi\PdfSharp-gdi.csproj">
-      <Project>{3f01920c-1117-4e1b-9c01-54eb82e5a1d1}</Project>
-      <Name>PdfSharp-gdi</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
