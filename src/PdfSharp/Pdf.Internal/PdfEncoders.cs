@@ -68,7 +68,7 @@ namespace PdfSharp.Pdf.Internal
             {
                 if (_winAnsiEncoding == null)
                 {
-#if !SILVERLIGHT && !NETFX_CORE && !UWP
+#if !SILVERLIGHT && !NETFX_CORE && !UWP && !NETSTANDARD2_0
                     // Use .net encoder if available.
                     _winAnsiEncoding = Encoding.GetEncoding(1252);
 #else
