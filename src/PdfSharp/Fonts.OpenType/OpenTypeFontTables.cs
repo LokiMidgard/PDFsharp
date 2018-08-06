@@ -51,7 +51,15 @@ namespace PdfSharp.Fonts.OpenType
     /// </summary>
     internal enum WinEncodingId
     {
-        Symbol, Unicode
+        Symbol = 0,
+        UnicodeUSC_2 = 1,
+        ShiftJIS = 2,
+        PRC = 3,
+        Big5 = 4,
+        Wansung = 5,
+        Johab = 6,
+        UnicodeUSC_4 = 10
+
     }
 
     /// <summary>
@@ -135,6 +143,64 @@ namespace PdfSharp.Fonts.OpenType
         }
     }
 
+
+    /// <summary>
+    /// CMap format 12: Segmented coverage.
+    /// The Windows standard format.
+    /// </summary>
+    internal class CMap12 : OpenTypeFontTable
+    {
+        internal struct SequentialMapGroup
+        {
+            public UInt32 startCharCode;// Firest character code in this group
+            public UInt32 endCharCode; // Last character code in this group
+            public UInt32 startGlyphID; // Glyph index corresponding to the starting character code.
+        }
+
+        public WinEncodingId encodingId; // Windows encoding ID.
+        public UInt16 format; // Subtable format; set to 12.
+        public UInt32 length; // Byte length of this subtable (including the header)
+        public UInt32 language; // This field must be set to zero for all cmap subtables whose platform IDs are other than Macintosh (platform ID 1). 
+        public UInt32 numGroups; // Number of groupings which follow
+
+        public SequentialMapGroup[] groups;
+
+        public CMap12(OpenTypeFontface fontData, WinEncodingId encodingId)
+            : base(fontData, "----")
+        {
+            this.encodingId = encodingId;
+            Read();
+        }
+
+        internal void Read()
+        {
+            try
+            {
+                // m_EncodingID = encID;
+                format = _fontData.ReadUShort();
+                Debug.Assert(format == 12, "Only format 12 expected.");
+                _fontData.ReadUShort(); // reserved
+                length = _fontData.ReadULong();
+                language = _fontData.ReadULong();  // Always null in Windows
+                numGroups = _fontData.ReadULong();
+
+                groups = new SequentialMapGroup[numGroups];
+
+                for (int i = 0; i < groups.Length; i++)
+                {
+                    ref var group = ref groups[i];
+                    group.startCharCode = _fontData.ReadULong();
+                    group.endCharCode = _fontData.ReadULong();
+                    group.startGlyphID = _fontData.ReadULong();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(PSSR.ErrorReadingFontData, ex);
+            }
+        }
+    }
+
     /// <summary>
     /// This table defines the mapping of character codes to the glyph index values used in the font.
     /// It may contain more than one subtable, in order to support more than one character encoding scheme.
@@ -152,6 +218,7 @@ namespace PdfSharp.Fonts.OpenType
         public bool symbol;
 
         public CMap4 cmap4;
+        public CMap12 cmap12;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CMapTable"/> class.
@@ -185,16 +252,27 @@ namespace PdfSharp.Fonts.OpenType
                     int currentPosition = _fontData.Position;
 
                     // Just read Windows stuff.
-                    if (platformId == PlatformId.Win && (encodingId == WinEncodingId.Symbol || encodingId == WinEncodingId.Unicode))
+                    if (platformId == PlatformId.Win && (encodingId == WinEncodingId.Symbol || encodingId == WinEncodingId.UnicodeUSC_2 || encodingId == WinEncodingId.UnicodeUSC_4))
                     {
                         symbol = encodingId == WinEncodingId.Symbol;
 
                         _fontData.Position = tableOffset + offset;
-                        cmap4 = new CMap4(_fontData, encodingId);
+                        var format = _fontData.ReadUShort();
+                        _fontData.Position = tableOffset + offset;
+
+                        if (format == 4)
+                        {
+                            cmap4 = new CMap4(_fontData, encodingId);
+                        }
+                        else if (format == 12)
+                        {
+                            cmap12 = new CMap12(_fontData, encodingId);
+
+                        }
                         _fontData.Position = currentPosition;
                         // We have found what we are looking for, so break.
                         success = true;
-                        break;
+                        //break;
                     }
                 }
                 if (!success)

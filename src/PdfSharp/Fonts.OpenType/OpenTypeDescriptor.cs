@@ -267,7 +267,7 @@ namespace PdfSharp.Fonts.OpenType
                     // Remap ch for symbol fonts.
                     ch = (char)(ch | (FontFace.os2.usFirstCharIndex & 0xFF00));  // @@@ refactor
                 }
-                int glyphIndex = CharCodeToGlyphIndex(ch);
+                var glyphIndex = CharCodeToGlyphIndex(ch);
                 Widths[idx] = GlyphIndexToPdfWidth(glyphIndex);
             }
         }
@@ -299,12 +299,54 @@ namespace PdfSharp.Fonts.OpenType
             return (int)Math.Round(value * 1000.0 / FontFace.head.unitsPerEm);
         }
 
+
+        public uint CharCodeToGlyphIndex(char highSurrogate, char lowSurrogate)
+        {
+            try
+            {
+                var value = char.ConvertToUtf32(highSurrogate, lowSurrogate);
+
+                var converted = BitConverter.ToUInt32(BitConverter.GetBytes(value), 0);
+                var cmap = FontFace.cmap.cmap12;
+
+                int seg;
+                for (seg = 0; seg < cmap.groups.Length; seg++)
+                {
+                    if (value <= cmap.groups[seg].endCharCode)
+                        break;
+                }
+                Debug.Assert(seg < cmap.groups.Length);
+
+                if (value < cmap.groups[seg].startCharCode)
+                    return 0;
+
+                return cmap.groups[seg].startGlyphID + converted - cmap.groups[seg].startCharCode;
+
+                //if (cmap.idRangeOffs[seg] == 0)
+                //    return (value + cmap.idDelta[seg]) & 0xFFFF;
+
+                //int idx = cmap.idRangeOffs[seg] / 2 + (value - cmap.startCount[seg]) - (segCount - seg);
+                //Debug.Assert(idx >= 0 && idx < cmap.glyphCount);
+
+                //if (cmap.glyphIdArray[idx] == 0)
+                //    return 0;
+
+                //return (cmap.glyphIdArray[idx] + cmap.idDelta[seg]) & 0xFFFF;
+            }
+            catch
+            {
+                GetType();
+                throw;
+            }
+        }
+
+
         /// <summary>
         /// Maps a unicode to the index of the corresponding glyph.
         /// See OpenType spec "cmap - Character To Glyph Index Mapping Table / Format 4: Segment mapping to delta values"
         /// for details about this a little bit strange looking algorithm.
         /// </summary>
-        public int CharCodeToGlyphIndex(char value)
+        public uint CharCodeToGlyphIndex(char value)
         {
             try
             {
@@ -322,7 +364,7 @@ namespace PdfSharp.Fonts.OpenType
                     return 0;
 
                 if (cmap.idRangeOffs[seg] == 0)
-                    return (value + cmap.idDelta[seg]) & 0xFFFF;
+                    return (value + (uint)cmap.idDelta[seg]) & (uint)0xFFFF;
 
                 int idx = cmap.idRangeOffs[seg] / 2 + (value - cmap.startCount[seg]) - (segCount - seg);
                 Debug.Assert(idx >= 0 && idx < cmap.glyphCount);
@@ -330,7 +372,7 @@ namespace PdfSharp.Fonts.OpenType
                 if (cmap.glyphIdArray[idx] == 0)
                     return 0;
 
-                return (cmap.glyphIdArray[idx] + cmap.idDelta[seg]) & 0xFFFF;
+                return (cmap.glyphIdArray[idx] + (uint)cmap.idDelta[seg]) & (uint)0xFFFF;
             }
             catch
             {
@@ -342,16 +384,16 @@ namespace PdfSharp.Fonts.OpenType
         /// <summary>
         /// Converts the width of a glyph identified by its index to PDF design units.
         /// </summary>
-        public int GlyphIndexToPdfWidth(int glyphIndex)
+        public int GlyphIndexToPdfWidth(uint glyphIndex)
         {
             try
             {
-                int numberOfHMetrics = FontFace.hhea.numberOfHMetrics;
-                int unitsPerEm = FontFace.head.unitsPerEm;
+                var numberOfHMetrics = FontFace.hhea.numberOfHMetrics;
+                var unitsPerEm = FontFace.head.unitsPerEm;
 
                 // glyphIndex >= numberOfHMetrics means the font is mono-spaced and all glyphs have the same width
                 if (glyphIndex >= numberOfHMetrics)
-                    glyphIndex = numberOfHMetrics - 1;
+                    glyphIndex = numberOfHMetrics - (uint)1;
 
                 int width = FontFace.hmtx.Metrics[glyphIndex].advanceWidth;
 
@@ -369,7 +411,7 @@ namespace PdfSharp.Fonts.OpenType
 
         public int PdfWidthFromCharCode(char ch)
         {
-            int idx = CharCodeToGlyphIndex(ch);
+            var idx = CharCodeToGlyphIndex(ch);
             int width = GlyphIndexToPdfWidth(idx);
             return width;
         }
@@ -402,11 +444,11 @@ namespace PdfSharp.Fonts.OpenType
         /// <summary>
         ///   //Converts the width of a glyph identified by its index to PDF design units.
         /// </summary>
-        public int GlyphIndexToWidth(int glyphIndex)
+        public int GlyphIndexToWidth(uint glyphIndex)
         {
             try
             {
-                int numberOfHMetrics = FontFace.hhea.numberOfHMetrics;
+                uint numberOfHMetrics = FontFace.hhea.numberOfHMetrics;
 
                 // glyphIndex >= numberOfHMetrics means the font is mono-spaced and all glyphs have the same width
                 if (glyphIndex >= numberOfHMetrics)
