@@ -317,10 +317,10 @@ namespace PdfSharp.Drawing
         /// </summary>
         void Initialize()
         {
-//#if DEBUG
-//            if (_familyName == "Segoe UI Semilight" && (_style & XFontStyle.BoldItalic) == XFontStyle.Italic)
-//                GetType();
-//#endif
+            //#if DEBUG
+            //            if (_familyName == "Segoe UI Semilight" && (_style & XFontStyle.BoldItalic) == XFontStyle.Italic)
+            //                GetType();
+            //#endif
 
             FontResolvingOptions fontResolvingOptions = OverrideStyleSimulations
                 ? new FontResolvingOptions(_style, StyleSimulations)
@@ -837,6 +837,16 @@ namespace PdfSharp.Drawing
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        public bool IsCharSupported(string text, int index)
+        {
+            uint glyphIndex;
+            if (char.IsHighSurrogate(text, index))
+                glyphIndex = Descriptor.CharCodeToGlyphIndex(text[index], text[index + 1]);
+            else
+                glyphIndex = Descriptor.CharCodeToGlyphIndex(text[index]);
+
+            return glyphIndex != 0;
+        }
 
         /// <summary>
         /// Cache PdfFontTable.FontSelector to speed up finding the right PdfFont

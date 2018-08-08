@@ -308,6 +308,8 @@ namespace PdfSharp.Fonts.OpenType
 
                 var converted = BitConverter.ToUInt32(BitConverter.GetBytes(value), 0);
                 var cmap = FontFace.cmap.cmap12;
+                if (cmap == null)
+                    return 0;
 
                 int seg;
                 for (seg = 0; seg < cmap.groups.Length; seg++)
