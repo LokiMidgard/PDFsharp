@@ -6,7 +6,7 @@
 
 <!-- netstandard20-->
   <PropertyGroup>
-    <TargetFrameworks>net20;net30;netstandard20</TargetFrameworks>
+    <TargetFrameworks>net20;net30;net40;netstandard20</TargetFrameworks>
     <DefineConstants>$(DefineConstants)</DefineConstants>
     <AssemblyName>PDFsharp</AssemblyName>
   </PropertyGroup>
@@ -24,6 +24,10 @@
     <GDI>true</GDI>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)'=='net30'">
+    <DefineConstants>$(DefineConstants);WPF</DefineConstants>
+    <WPF>true</WPF>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net40'">
     <DefineConstants>$(DefineConstants);WPF</DefineConstants>
     <WPF>true</WPF>
   </PropertyGroup>
@@ -97,6 +101,10 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationFramework" />
     <Reference Include="PresentationCore" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='net40'">
+    <Reference Include="System.Xaml" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(GDI)'!=''">
