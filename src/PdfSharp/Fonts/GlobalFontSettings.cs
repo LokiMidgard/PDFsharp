@@ -67,7 +67,7 @@ namespace PdfSharp.Fonts
                         return;
 
                     if (FontFactory.HasFontSources)
-                        throw new InvalidOperationException("Must not change font resolver after is was once used.");
+                        FontFactory.InvalidateFontCache();
 
                     _fontResolver = value;
                 }
