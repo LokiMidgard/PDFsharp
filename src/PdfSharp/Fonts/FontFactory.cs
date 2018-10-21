@@ -418,6 +418,15 @@ namespace PdfSharp.Fonts
             return state.ToString();
         }
 
+        internal static void InvalidateFontCache()
+        {
+            Lock.EnterFontFactory();
+            FontResolverInfosByName.Clear();
+            FontSourcesByKey.Clear();
+            FontSourcesByName.Clear();
+            Lock.ExitFontFactory();
+        }
+
         // TODO: Move to ctor
 
         /// <summary>
