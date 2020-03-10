@@ -61,10 +61,15 @@ namespace PdfSharp.Fonts
                     if (char.IsLowSurrogate(text, idx))
                         continue; // Ignore the seccond char of a surrogate pair
 
-                    char ch = text[idx];
+                    int ch = text[idx];
+                    if (char.IsHighSurrogate(text, idx))
+                    {
+                        ch = char.ConvertToUtf32(text[idx], text[idx + 1]);
+                    }
+
                     if (!CharacterToGlyphIndex.ContainsKey(ch))
                     {
-                        char ch2 = ch;
+                        int ch2 = ch;
                         if (symbol)
                         {
                             // Remap ch for symbol fonts.
@@ -72,10 +77,10 @@ namespace PdfSharp.Fonts
                         }
                         uint glyphIndex;
 
-                        if (char.IsHighSurrogate(ch))
-                            glyphIndex = _descriptor.CharCodeToGlyphIndex(ch, text[idx + 1]);
+                        if (char.IsHighSurrogate(text[idx]))
+                            glyphIndex = _descriptor.CharCodeToGlyphIndex(text[idx], text[idx + 1]);
                         else
-                            glyphIndex = _descriptor.CharCodeToGlyphIndex(ch2);
+                            glyphIndex = _descriptor.CharCodeToGlyphIndex(text[idx]);
 
                         CharacterToGlyphIndex.Add(ch, glyphIndex);
                         GlyphIndices[glyphIndex] = null;
@@ -123,11 +128,11 @@ namespace PdfSharp.Fonts
             return CharacterToGlyphIndex.ContainsKey(ch);
         }
 
-        public char[] Chars
+        public int[] Chars
         {
             get
             {
-                char[] chars = new char[CharacterToGlyphIndex.Count];
+                int[] chars = new int[CharacterToGlyphIndex.Count];
                 CharacterToGlyphIndex.Keys.CopyTo(chars, 0);
                 Array.Sort(chars);
                 return chars;
@@ -144,7 +149,7 @@ namespace PdfSharp.Fonts
 
         public char MinChar = char.MaxValue;
         public char MaxChar = char.MinValue;
-        public Dictionary<char, uint> CharacterToGlyphIndex = new Dictionary<char, uint>();
+        public Dictionary<int, uint> CharacterToGlyphIndex = new Dictionary<int, uint>();
         public Dictionary<uint, object> GlyphIndices = new Dictionary<uint, object>();
     }
 }
