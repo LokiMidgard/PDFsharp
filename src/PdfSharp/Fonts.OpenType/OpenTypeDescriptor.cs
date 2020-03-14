@@ -317,6 +317,8 @@ namespace PdfSharp.Fonts.OpenType
                     if (value <= cmap.groups[seg].endCharCode)
                         break;
                 }
+                if (seg >= cmap.groups.Length)
+                    return 0;
                 Debug.Assert(seg < cmap.groups.Length);
 
                 if (value < cmap.groups[seg].startCharCode)
