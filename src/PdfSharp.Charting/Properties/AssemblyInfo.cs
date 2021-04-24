@@ -35,17 +35,17 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("PDFsharp Charting")]
-[assembly: AssemblyVersion(PdfSharp.ProductVersionInfo.Version)]
-[assembly: AssemblyDescription("A .NET charting library based on PDFsharp.")]
-[assembly: AssemblyConfiguration(PdfSharp.ProductVersionInfo.Configuration)]
-[assembly: AssemblyCompany(PdfSharp.ProductVersionInfo.Company)]
-#if DEBUG
-  [assembly: AssemblyProduct(PdfSharp.ProductVersionInfo.Product + " (Debug Build)")]
-#else
-  [assembly: AssemblyProduct(PdfSharp.ProductVersionInfo.Product)]
-#endif
-[assembly: AssemblyCopyright(PdfSharp.ProductVersionInfo.Copyright)]
+//[assembly: AssemblyTitle("PDFsharp Charting")]
+//[assembly: AssemblyVersion(PdfSharp.ProductVersionInfo.Version)]
+//[assembly: AssemblyDescription("A .NET charting library based on PDFsharp.")]
+//[assembly: AssemblyConfiguration(PdfSharp.ProductVersionInfo.Configuration)]
+//[assembly: AssemblyCompany(PdfSharp.ProductVersionInfo.Company)]
+//#if DEBUG
+//  [assembly: AssemblyProduct(PdfSharp.ProductVersionInfo.Product + " (Debug Build)")]
+//#else
+//  [assembly: AssemblyProduct(PdfSharp.ProductVersionInfo.Product)]
+//#endif
+//[assembly: AssemblyCopyright(PdfSharp.ProductVersionInfo.Copyright)]
 [assembly: AssemblyTrademark(PdfSharp.ProductVersionInfo.Trademark)]
 [assembly: AssemblyCulture(PdfSharp.ProductVersionInfo.Culture)]
 
